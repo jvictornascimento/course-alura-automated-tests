@@ -1,0 +1,54 @@
+package br.com.alura.adopet.api.service;
+
+import br.com.alura.adopet.api.dto.CadastroPetDto;
+import br.com.alura.adopet.api.model.Abrigo;
+import br.com.alura.adopet.api.model.Pet;
+import br.com.alura.adopet.api.repository.PetRepository;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.then;
+
+@ExtendWith(MockitoExtension.class)
+
+class PetServiceTest {
+
+    @InjectMocks
+    PetService service;
+    @Mock
+    Abrigo abrigo;
+
+    @Mock
+    CadastroPetDto dto;
+
+    @Mock
+    private PetRepository repository;
+
+    @Test
+    void deveriaCadastrarPet(){
+        //arrange
+
+        //Act
+        service.cadastrarPet(abrigo,dto);
+
+        //Assert
+        then(repository).should().save(new Pet(dto,abrigo));
+
+    }
+
+    @Test
+    void deveriaListarPetDisponiveis(){
+        //arrange
+
+        //act
+        service.buscarPetsDisponiveis();
+
+        //assert
+        then(repository).should().findAllByAdotadoFalse();
+    }
+
+}
